@@ -1,0 +1,20 @@
+#!/bin/bash
+
+pwd=$(cd "$(dirname "$0")" && pwd -P)
+project=$(basename $PWD)
+docker_working_dir=/git/$project
+docker_img=us.gcr.io/xano-252315/cloud-devops/angular:latest
+
+if [ "$1" = "" ]; then
+  cmd="/bin/sh"
+else 
+  cmd="$@"
+fi
+
+docker \
+  run \
+  -it \
+  --rm \
+  -v $pwd:$docker_working_dir \
+  -w $docker_working_dir \
+  $docker_img /bin/sh -c "$cmd"
